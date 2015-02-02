@@ -10,28 +10,33 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.itu.myserver.AddressBookProtos.Person;
 import com.itu.util.AddressBookStore;
+import com.itu.util.Log4jUtil;
 
 @Path("/addressbook")
 public class AddressBookResource {
+	Logger logger= Log4jUtil.getLogger(AddressBookResource.class);
 	@PUT
 	@Consumes("application/x-protobuf")
 	public Response putPerson(Person person) {		
-		System.out.println("put person...");
+		logger.debug(String.format("put a person, id:%d, name:%s, email:%s", person.getId(),person.getName(),person.getEmail()));
 		AddressBookStore.store(person);
 		return Response.ok().build();
 	}
 	@POST
 	@Consumes("application/x-protobuf")
 	public Response postPerson(Person person) {		
-		System.out.println("post person...");
+		logger.debug(String.format("post a person, id:%d, name:%s, email:%s", person.getId(),person.getName(),person.getEmail()));
 		AddressBookStore.store(person);
 		return Response.ok().build();
 	}
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String sayHello() {
+		logger.debug("testing using hello");
 		return "Hello Jersey";
 	}
 	
@@ -55,6 +60,7 @@ public class AddressBookResource {
 	public Response getPerson(@PathParam("name") String name) {		
 		Person p = AddressBookStore.getPerson(name);
 		System.out.println(name);
+		logger.debug(String.format("get a person, id:%d, name:%s, email:%s", p.getId(),p.getName(),p.getEmail()));
 		return Response.ok(p, "application/x-protobuf").build();
 	}
 }
