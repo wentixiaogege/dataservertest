@@ -14,35 +14,47 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import com.itu.myserver.AddressBookProtos.Person;
+import com.itu.myserver.CloudCommandProtos.CloudCommand;
 
 @Provider
 @Produces("application/x-protobuf")
 public class ProtobufMessageBodyWriter implements MessageBodyWriter<Object> {
-	/** a cache to save the cost of duplicated call(getSize, writeTo) to one object. */
+	/**
+	 * a cache to save the cost of duplicated call(getSize, writeTo) to one
+	 * object.
+	 */
 	private Map<Object, byte[]> buffer = new WeakHashMap<Object, byte[]>();
-	
+
 	@Override
-	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations,
-			MediaType mediaType) {
+	public boolean isWriteable(Class<?> type, Type genericType,
+			Annotation[] annotations, MediaType mediaType) {
 		// it will handle all model classes
 		return mediaType.toString().equals("application/x-protobuf");
 	}
-	
+
 	@Override
 	public long getSize(Object message, Class<?> type, Type genericType,
 			Annotation[] annotations, MediaType mediaType) {
-		Person p = (Person)message;
-		byte[] bytes = p.toByteArray();
-		buffer.put(message, bytes);
-		return bytes.length;
+		if (message instanceof CloudCommand) {
+			CloudCommand p = (CloudCommand) message;
+			byte[] bytes = p.toByteArray();
+			buffer.put(message, bytes);
+			return bytes.length;
+			// } else if (message instanceof AddressBook) {
+			// AddressBook p = (AddressBook) message;
+			// byte[] bytes = p.toByteArray();
+			// buffer.put(message, bytes);
+			// return bytes.length;
+		}
+		return 0;
 	}
 
 	@Override
 	public void writeTo(Object message, Class<?> type, Type genericType,
-		    Annotation[] annotations, MediaType mediaType, 
-		    MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
-			throws IOException, WebApplicationException {
+			Annotation[] annotations, MediaType mediaType,
+			MultivaluedMap<String, Object> httpHeaders,
+			OutputStream entityStream) throws IOException,
+			WebApplicationException {
 		entityStream.write(buffer.remove(message));
 	}
 }

@@ -13,8 +13,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import com.itu.myserver.AddressBookProtos.Person;
-
+import com.itu.myserver.CloudCommandProtos.CloudCommand;
 
 @Provider
 @Consumes("application/x-protobuf")
@@ -43,6 +42,6 @@ public class ProtobufMessageBodyReader implements MessageBodyReader<Object> {
     		}
     	} while (read > 0);
  
-		return Person.parseFrom(baos.toByteArray());
+		return CloudCommand.parseFrom(baos.toByteArray());
 	}
 }
