@@ -1,5 +1,6 @@
 package com.itu.DAO;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.hibernate.Transaction;
 import com.itu.bean.CloudCommand;
 import com.itu.bean.Command;
 import com.itu.bean.SmartMeterData;
+import com.itu.localserver.client.SmartMeterDataProtos.SmartMeter;
 import com.itu.util.DateUtils;
 import com.itu.util.HibernateUtil;
 import com.itu.util.Log4jUtil;
@@ -197,8 +199,86 @@ public class DataAccess {
 		
 		return cloudCommandsBuilder.build();
 	}
-	public static void localserver_postSmartmeterData(SmartMeterData smdata) {
+	public static boolean localserver_postSmartmeter(SmartMeter smdata) {
 		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		Session s = null;
+        //using enum or using data access
+		SmartMeterData hibernate_smdata =null;
 		
+		try {
+			s = HibernateUtil.getSessionFactory().openSession();
+			
+			hibernate_smdata.setId(smdata.getId());
+			
+			hibernate_smdata.setAccumulatedEnergy(new BigDecimal(Float.toString(smdata.getAccumulatedEnergy())));
+			
+			
+			
+			
+			
+			
+			Transaction tran = s.beginTransaction();// 开始事物
+			s.save(hibernate_smdata);// 执行
+			tran.commit();// 提交
+			logger.info(String.format("hibernate adding new smdata to SmartMeterData table ------ id is :%s", smdata.getId()));
+			/*
+			 * for (SmartMeterData smdata1 : list) {
+			 * logger.info(String.format("Smart Meter data IEEE address is :%s",
+			 * smdata1.getSmIeeeAddress())); }
+			 */
+		} catch (Exception e) {
+			logger.debug("hibernate adding new command to commandcloud table ------exception:" + e);
+			return false;
+			// fail(e.getMessage());
+		} finally {
+
+			if (s != null)
+				s.close();
+		}
+		return true;	
+	}
+	public static boolean localserver_postSmartmeterData(com.itu.localserver.client.SmartMeterDataProtos.SmartMeterData smdatalist) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		Session s = null;
+		SmartMeterData hibernate_smdata =null;
+		try {
+			s = HibernateUtil.getSessionFactory().openSession();
+			Transaction tran = s.beginTransaction();// 开始事物
+			List<SmartMeter> list = smdatalist.getSmartMeterList();
+		    for (SmartMeter smdata : list) {
+		    	
+			hibernate_smdata.setId(smdata.getId());		
+			hibernate_smdata.setAccumulatedEnergy(new BigDecimal(Float.toString(smdata.getAccumulatedEnergy())));
+			
+			
+			
+			s.save(hibernate_smdata);// 执行
+			tran.commit();// 提交
+			logger.info(String.format("hibernate adding new smdata to SmartMeterData table ------ id is :%s", smdata.getId()));
+			
+		    }
+			
+			
+			
+			
+		
+			
+			/*
+			 * for (SmartMeterData smdata1 : list) {
+			 * logger.info(String.format("Smart Meter data IEEE address is :%s",
+			 * smdata1.getSmIeeeAddress())); }
+			 */
+		} catch (Exception e) {
+			logger.debug("hibernate adding new command to commandcloud table ------exception:" + e);
+			return false;
+			// fail(e.getMessage());
+		} finally {
+
+			if (s != null)
+				s.close();
+		}
+		return true;	
 	}
 }
