@@ -28,7 +28,7 @@ public class FrontServer {
 		// rest/person
 		FrontServer fs = new FrontServer();
 		
-		fs.postCommand("0");
+		fs.postCommand("3");
 		// String url =
 		// "http://localhost:8080/RESTfulItu/myserver/addressbook/person";
 		// getPerson(url);

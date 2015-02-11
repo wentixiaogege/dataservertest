@@ -143,15 +143,7 @@ public class DataAccess {
 			if (s != null)
 				s.close();
 		}
-		/*required int32 id = 1;//
-		optional int32 timestamp = 2;
-		optional string name = 3;
-		optional int32 dataLength = 4;
-		optional int32 checked = 5;
-		optional int32 coordinatorId = 6;//
-		optional int32 smartmeterId = 7; //
-		optional string param1 = 8;      //
-*/		
+
 		return cloudcommandBuilder.build();
 	}
 	public static com.itu.myserver.CloudCommandProtos.CloudCommands localserver_getNewCommands() {
