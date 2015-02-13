@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Feb 2, 2015 11:46:29 AM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="com.itu.bean.SmartMeterData" table="smart_meter_data" catalog="emsdb">
+    <class name="com.itu.bean.SmartMeterRecord" table="smart_meter_data" catalog="emsdb">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />

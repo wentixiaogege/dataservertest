@@ -3,7 +3,7 @@
 option java_package = "com.itu.localserver.client";
 option java_outer_classname = "SmartMeterDataProtos";
 
-message SmartMeter {
+message SmartMeterRecord {
 
   optional int32 id = 1;
   optional int32 sm_index = 2;
@@ -39,5 +39,5 @@ message SmartMeter {
 }
 
 message SmartMeterData {
-  repeated SmartMeter smart_meter = 1;
+  repeated SmartMeterRecord smart_meter_record = 1;
 }

@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 import com.itu.DAO.DataAccess;
-import com.itu.bean.SmartMeterData;
+import com.itu.bean.SmartMeterRecord;
 import com.itu.util.Log4jUtil;
 
 
@@ -28,7 +28,7 @@ public class Front_ClientGetting {
 	@Path("/smartmeterdata/{id}")
 	public Response getSmartmeterData(@PathParam("id") int id) {		
 		//Person p = AddressBookStore.getPerson(name);
-		SmartMeterData sm = DataAccess.frontend_getSmartMeterData(id);
+		SmartMeterRecord sm = DataAccess.frontend_getSmartMeterData(id);
 		
 		logger.debug(String.format("get a smdata, id:%d, ieee:%s, energy:%s", sm.getId(),sm.getSmIeeeAddress(),sm.getEnergy()));
 		return Response.ok(sm, "application/x-protobuf").build();
